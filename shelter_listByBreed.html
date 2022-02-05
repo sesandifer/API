@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/shelter_listByBreed.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Shelter List By Breed</title>
+  </head>
+  
+  <body>
+	<div id="container">
+        <div id="navigate">
+            <ul class="nav">
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li>
+                    <a href="breedlist.html">Breed List</a>
+                </li>
+                <li>
+                    <a href="shelter_listByBreed.html">Shelters</a>
+                </li>
+                <li>
+                    <a href="shelter_getPets.html">Pets By Shelter</a>
+                </li>
+            </ul>
+        </div>
+        <div id="content" class="clearfix">
+        	<div id="info">
+            <xmp>
+            
+            SHELTERS LISTED BY BREED
+            
+            Now that we have a list of breeds, we can use the 
+            breed name to find shelters of interest. The 
+            shelter_listByBreed method is used to locate shelters 
+            by animal breed.  The API call can be used to produce
+            a list of shelters by location and phone number.
+            
+            The  method requires a developer API key, a type of 
+            animal, and a breed name:
+            
+            key: dbd8058845ca77d360619bf5f8a371af
+            animal: dog
+            breed: Beagle
+            format: json
+            callback=?
+            
+            The full url is now:
+            
+            api.petfinder.com/shelter.listByBreed?animal=dog
+            &breed=Beagle&key=dbd8058845ca77d360619bf5f8a371af
+            &format=json&callback=?
+            
+            Now we can perform an other ajax call:
+
+            $.ajax({
+                dataType: "jsonp",
+                url: url,
+                success:(function(data){
+                var shelters = data.petfinder.shelters.shelter;
+                
+                for(var q = 0; q < shelters.length; q++){
+                    var SID = shelters[q].id.$t;
+                    var shelterID='<li>'+SID+'</li>';
+                    $('#sid').append(shelterID);
+                    
+                    var SCITY = shelters[q].city.$t;
+                    var shelterCity='<li>'+SCITY+'</li>';
+                    $('#cid').append(shelterCity);
+                    
+                    var SSTATE = shelters[q].state.$t;
+                    var shelterState='<li>'+SSTATE+'</li>';
+                    $('#stid').append(shelterState);
+                    
+                    var SPHONE = shelters[q].phone.$t;
+                    var shelterPhone='<li>'+SPHONE+'</li>';
+                    $('#pid').append(shelterPhone);
+            	}
+            	})
+            });
+            The call again returns an object. This time
+            the iteration includes values for shelter id,
+            city, state and phone number.
+			</xmp>
+			</div>
+            
+			<div id="results">
+            	<br>
+				<b>Example: List of Shelters by Breed</b>
+                <img src = "img/shelter_list_by_breed.png" style="width:100%;">
+                <br>
+                <p>Click on "Submit" to load a list of</p>
+                <p>shelters with Beagles from the database:</p>
+                <form>
+                    <input id="runShelterList" type="submit">
+                </form>
+              	<br>
+              	<div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th width="20%">Shelter ID</th>
+                            <th width="40%">Phone</th>
+                            <th width="20%">City</th>
+                            <th width="20%">State</th>
+                        </tr>
+                        <tr>
+                            <td id="sid" width="20%"></td>
+                            <td id="pid" width="40%"></td>
+                            <td id="cid" width="20%"></td>
+                            <td id="stid" width="20%"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+              	</div>
+			</div>
+            
+        </div>
+	</div>	
+  </body>
+</html>

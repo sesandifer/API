@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/shelter_getPets.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Shelter Get Pets</title>
+  </head>
+  
+  <body>
+	<div id="container">
+        <div id="navigate">
+            <ul class="nav">
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li>
+                    <a href="breedlist.html">Breed List</a>
+                </li>
+                <li>
+                    <a href="shelter_listByBreed.html">Shelters</a>
+                </li>
+                <li>
+                    <a href="shelter_getPets.html">Pets By Shelter</a>
+                </li>
+            </ul>
+        </div>
+        <div id="content" class="clearfix">
+        	<div id="info">
+            <xmp>
+            
+            DISPLAY PETS AT A SHELTER
+            
+            We have a list of shelters from shelter_listByBreed.
+            We can now use the shelter id from this list to 
+            retrieve information about the pets that are currently
+            available at the shelter using shelter.getPets.
+            
+            The  method requires a developer API key and the
+            shelter id:
+            
+            key: dbd8058845ca77d360619bf5f8a371af
+            id: AL139
+            format: json
+            callback=?
+            
+            The full url is now:
+
+            api.petfinder.com/shelter.getPets?id=AL139
+            &key=dbd8058845ca77d360619bf5f8a371af
+            &format=json&callback=?
+            
+            Now we can perform an other ajax call:
+            
+            $.ajax({
+                dataType: "jsonp",
+                url: url,
+                success:(function(data){
+                var sPets = data.petfinder.pets.pet;
+                for(var q = 0; q < sPets.length; q++){
+                    var desc = sPets[q].description.$t;
+                    var description='<li>'+desc+'</li>';
+                    var photo = sPets[q].media.photos.photo[2].$t;
+                    var imSrc = '<img src="' + photo + '>';
+                    $('#sid').append(imSrc);
+                    $('#sid').append(description + "<br><br>");
+             	}
+            	})
+            });
+            
+            The pet image and description are appended to a table.
+            
+ 			</xmp>
+					
+			</div>
+			<div id="results">
+				<br>
+                <b>Example: List of Pets at a Shelter</b>
+                <img src = "img/shelter_get_pets.png" style="width:100%;">
+                <br>
+                <p>Click on "Submit" to load a list of pets</p>
+                <p>at Shelter AL139 from the database:</p>
+                <form>
+                    <input id="runPetList" type="submit">
+                </form>
+              	<br>
+              	<div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th></th>                
+                        </tr>
+                        <tr>
+                            <td id="sid"></td>       
+                        </tr>
+                        </tbody>
+                    </table>
+              	</div>
+			</div>
+        </div>
+	</div>	
+  </body>
+</html>
